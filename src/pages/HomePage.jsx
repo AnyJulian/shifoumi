@@ -10,7 +10,10 @@ function HomePage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await enregistrement(username, password);
+    const response = await enregistrement("http://fauques.freeboxos.fr:3000/register", "POST", {
+      username: username,
+      password: password,
+    });
     console.log(response);
   };
   return (
