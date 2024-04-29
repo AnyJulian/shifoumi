@@ -4,6 +4,7 @@ import { enregistrement } from '../services/apiBackend';
 
 
 
+
 function HomePage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -12,6 +13,7 @@ function HomePage() {
     event.preventDefault();
     const response = await enregistrement(username, password);
     console.log(response);
+    
   };
   return (
     <>
