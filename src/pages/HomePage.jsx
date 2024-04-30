@@ -1,25 +1,25 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom'
-import { enregistrement } from '../services/apiBackend';
-
-
-
+import React, { useState } from "react";
+import { enregistrement } from "../services/apiBackend";
+import { Link, useNavigate } from "react-router-dom";
 
 function HomePage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await enregistrement(username, password);
-    console.log(response);
-    
+    const response = await enregistrement(username, password, navigate);
+    if (!response) {
+      console.log("Login failed");
+    }
   };
+  
   return (
     <>
       <div>HomePage</div>
-      <Link to='/compteutilisateur'>Compte</Link>
-      <form onSubmit={handleSubmit}>
+      <Link to='/compteUtilisateur'>Compte</Link>
+      <form onSubmit={(event) => handleSubmit(event)}>
       <label>
         Nom d'utilisateur:
         <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
@@ -30,11 +30,8 @@ function HomePage() {
       </label>
       <input type="submit" value="S'inscrire" />
     </form>
-      
-
     </>
-
   )
 }
 
-export default HomePage
+export default HomePage;
