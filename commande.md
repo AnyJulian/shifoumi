@@ -2,10 +2,13 @@ npm init (server backend node web)
 npm install express (framwork pour node)
 npm start
 
-rest.http (pour faire les tests des calls api et avoir les résultats de tests en mêmet temps, restclient)
+eventsource pour le temms réel avec du node ( méthode get sur une route, cette route renvoie lors de son actualisation les infos de celles ci. En l'occurence pour notre projet shifoumi, le match renvoie les player qui join, les new_turn )
+
+rest.http (pour faire les tests des calls api et avoir les résultats de tests en mêmet temps, restclient -> extention)
 
 dans les fichier c'est écrit en js, pour faire le server de base:
 server.js :
+
 ### initailisation du server
 cont express = require("express");
 const app = express();
@@ -28,6 +31,8 @@ app.get("/tasks", (req, res) => {
 app.post()
 
 add.put()
+
+add.delete()
 
 ### port d'écoute
 app.listen(3000, () => {
