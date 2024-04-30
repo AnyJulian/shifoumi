@@ -58,8 +58,9 @@ export const getMatches = async () => {
   return resp.json();
 };
 
-export const joinMatches = async () => {
+export const joinMatchesAPI = async () => {
   const storedToken = localStorage.getItem('token');
+  let idMatch;
   
   const resp = await fetch("http://fauques.freeboxos.fr:3000/matches", {
     method: "POST",
@@ -68,6 +69,13 @@ export const joinMatches = async () => {
       "Authorization": `Bearer ${storedToken}`, 
     },
   });
+  if (resp.ok) {
+    const data = await resp.json();
+    idMatch = data._id; 
+    localStorage.setItem('idMatch', idMatch); 
+    console.log(idMatch)
+  }
+ 
 
-  return resp.json();
+  return idMatch;
 };

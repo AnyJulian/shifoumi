@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { joinMatches } from '../services/apiBackend';
+import { joinMatchesAPI } from '../services/apiBackend';
 
 function Matches() {
   const [matches, setMatches] = useState([]);
@@ -10,8 +10,8 @@ function Matches() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await joinMatches();
-        setMatches(data);
+        const data = await joinMatchesAPI();
+        setMatches([data]); // Les matches doivent être un tableau
       } catch (error) {
         console.error('Error fetching data:', error);
         setError(error);
@@ -40,14 +40,9 @@ function Matches() {
           matches.map((match, index) => (
             <div key={index} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
               <h2>Match {index + 1}</h2>
-              <p><strong>Player 1:</strong> {match.user1.username}</p>
-              <p><strong>Player 2:</strong> {match.user2 ? match.user2.username : "Waiting for player 2..."}</p>
-              <p><strong>Turns:</strong></p>
-              <ul>
-                {match.turns.map((turn, idx) => (
-                  <li key={idx}>Turn {idx + 1}: {turn}</li>
-                ))}
-              </ul>
+              {match.user1 && <p><strong>Vous êtes:</strong> {match.user1.username}</p>}
+              {match.user2 && <p><strong>Votre adversaire est:</strong> {match.user2.username}</p>}
+              {match.turns && <p><strong>Numéro du tour:</strong> {match.turns.length + 1}</p>}
             </div>
           ))
         ) : (
