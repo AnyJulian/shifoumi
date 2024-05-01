@@ -6,6 +6,7 @@ import CompteUtilisateur from './pages/compteUtilisateur'
 import Matches from './pages/matches'
 import Connexion from './pages/Connexion'
 import Profil from './pages/Profil'
+import NewHome from './pages/newHome'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
           <Route path='/connexion' element={<Connexion />}/>
           <Route path='/profil' element={<Profil />}/>
           <Route path='/Matches' element={<Matches />}/>
+          <Route path='/Home' element={<NewHome />}/>
       </Routes>
     </BrowserRouter>
     </>
