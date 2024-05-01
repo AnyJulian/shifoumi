@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getMatches } from '../services/apiBackend';
 
+
 function CompteUtilisateur() {
   const [matches, setMatches] = useState([]);
   const [currentUser, setCurrentUser] = useState('');
@@ -33,13 +34,15 @@ function CompteUtilisateur() {
 
   const renderTurns = (turns) => {
     return (
-      <ul>
-        {turns.map((turn, index) => (
-          <li key={index}>
-            {turn.user1} vs {turn.user2} : {turn.winner === 'draw' ? 'Draw' : turn.winner === turn.user1 ? 'User1 Wins' : 'User2 Wins'}
-          </li>
-        ))}
-      </ul>
+      <>
+        <ul>
+          {turns.map((turn, index) => (
+            <li key={index}>
+              {turn.user1} vs {turn.user2} : {turn.winner === 'draw' ? 'Draw' : turn.winner === turn.user1 ? 'User1 Wins' : 'User2 Wins'}
+            </li>
+          ))}
+        </ul>
+      </>
     );
   };
 
@@ -72,6 +75,7 @@ function CompteUtilisateur() {
       <h1>Compte Utilisateur</h1>
       <Link to='/'>Home</Link>
       <Link to='/Matches'>Jouer</Link>
+      <Link to='/profil'>Go profil</Link>
       <div>
         {matches.length > 0 ? (
           matches.map((match, index) => (

@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage'
 import CompteUtilisateur from './pages/compteUtilisateur'
 import Matches from './pages/matches'
 import Connexion from './pages/Connexion'
+import Profil from './pages/Profil'
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
           <Route path='/' element={<HomePage />}/>
           <Route path='/compteutilisateur' element={<CompteUtilisateur />}/>
           <Route path='/connexion' element={<Connexion />}/>
+          <Route path='/profil' element={<Profil />}/>
           <Route path='/Matches' element={<Matches />}/>
       </Routes>
     </BrowserRouter>
