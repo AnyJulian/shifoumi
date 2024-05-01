@@ -9,6 +9,7 @@ function HomePage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log(username, password)
     const response = await enregistrement(username, password, navigate);
     if (!response) {
       console.log("Login failed");
@@ -19,6 +20,7 @@ function HomePage() {
     <>
       <div>HomePage</div>
       <Link to='/compteUtilisateur'>Compte</Link>
+      <Link to='/connexion'>Connexion</Link>
       <form onSubmit={(event) => handleSubmit(event)}>
       <label>
         Nom d'utilisateur:
