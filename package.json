@@ -14,10 +14,17 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
-    "framer-motion": "^11.1.7",
+    "@react-three/drei": "^7.26.1",
+    "@react-three/fiber": "^7.0.21",
+    "@types/three": "^0.164.0",
+    "framer-motion": "^6.0.0-beta.5",
+    "framer-motion-3d": "^6.0.0-beta.5",
+    "popmotion": "^11.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.3"
+    "react-router-dom": "^6.22.3",
+    "react-use-measure": "^2.1.1",
+    "three": "^0.135.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
