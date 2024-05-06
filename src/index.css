@@ -3,7 +3,7 @@ html {
   overflow: hidden;
 }
 
-button {
+.btnPlay {
   --purple: #db07d1;
   --pink: #f2056f;
   --blue: #61dafb;

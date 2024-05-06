@@ -1,3 +1,4 @@
+import { Navigate } from "react-router-dom";
 import ProgressButton from "../assets/buttonLocked";
 import ButtonPlay from "../assets/buttonPlay";
 
@@ -7,7 +8,7 @@ function newHome() {
     <>
     <h1>New Home</h1>
     <ProgressButton/>
-    <ButtonPlay/>
+    <ButtonPlay title="Jouer" chemin="/connexion"/>
   </>
   );
 }
