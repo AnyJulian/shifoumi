@@ -1,11 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { joinMatchesAPI } from '../services/apiBackend';
+import { joinMatchesAPI, doTurn } from '../services/apiBackend';
+import SubscribeMatche from "../services/subscribe";
+
 
 function Matches() {
+
+  const storedToken = localStorage.getItem('token');
+  const storedidMatch = localStorage.getItem('idMatch');
+
   const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [turn, setTurn] = useState(1);
+
+  const handleMove = async (move) => {
+    const data = await doTurn(turn, move);
+    if (turn < 3) {
+      setTurn(turn + 1);
+    }
+    return data;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +38,27 @@ function Matches() {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    var eventSourceInitDict = {headers: {"Authorization": `Bearer ${storedToken}`}};
+    
+    const eventSource = new EventSource(`http://fauques.freeboxos.fr:3000/matches/${storedidMatch}/subscribe`, eventSourceInitDict);
+
+    eventSource.onmessage = (event) => {
+      setSSEData(event.data);
+    };
+
+    eventSource.onerror = (error) => {
+      console.error('EventSource failed:', error);
+      eventSource.close();
+    };
+
+    return () => {
+      // Clean up the event source when the component is unmounted
+      eventSource.close();
+    };
+  }, []); // Empty dependency array ensures the effect runs only once
+
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -49,6 +86,12 @@ function Matches() {
           <p>No matches found.</p>
         )}
       </div>
+        <div>
+          <button onClick={() => handleMove('rock')}>Rock</button>
+          <button onClick={() => handleMove('paper')}>Paper</button>
+          <button onClick={() => handleMove('scissors')}>Scissors</button>
+        </div>     
+        {/* <SubscribeMatche/>    */}
     </>
   );
 }
