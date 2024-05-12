@@ -70,7 +70,7 @@ function SignInSide() {
                 required
                 fullWidth
                 id="username"
-                label="User name"
+                label="Nom d'utilisateur"
                 name="username"
                 autoComplete="username"
                 value={username}
@@ -82,7 +82,7 @@ function SignInSide() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Mot de passe"
                 type="password"
                 id="password"
                 autoComplete="current-password"

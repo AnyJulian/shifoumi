@@ -79,3 +79,21 @@ export const joinMatchesAPI = async () => {
 
   return idMatch;
 };
+
+export const doTurn = async (turn, move) => {
+  const storedToken = localStorage.getItem('token');
+  const storedidMatch = localStorage.getItem('idMatch');
+
+  const resp = await fetch(`http://fauques.freeboxos.fr:3000/matches/${storedidMatch}/turns/${turn}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${storedToken}`,
+    },
+    body: JSON.stringify({ move: move }),
+  });
+
+  return resp.json();
+};
+
+///fonction faire un tour, avec comme parametre, numéro du tour, id du match, body move du tour
