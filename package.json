@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
+    "@react-nano/use-event-source": "^0.13.0",
     "@react-three/drei": "^7.26.1",
     "@react-three/fiber": "^7.0.21",
     "@types/three": "^0.164.0",

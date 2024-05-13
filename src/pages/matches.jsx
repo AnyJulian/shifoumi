@@ -17,9 +17,6 @@ function Matches() {
 
   const handleMove = async (move) => {
     const data = await doTurn(turn, move);
-    if (turn < 3) {
-      setTurn(turn + 1);
-    }
     return data;
   };
 
@@ -38,27 +35,6 @@ function Matches() {
 
     fetchData();
   }, []);
-
-  useEffect(() => {
-    var eventSourceInitDict = {headers: {"Authorization": `Bearer ${storedToken}`}};
-    
-    const eventSource = new EventSource(`http://fauques.freeboxos.fr:3000/matches/${storedidMatch}/subscribe`, eventSourceInitDict);
-
-    eventSource.onmessage = (event) => {
-      setSSEData(event.data);
-    };
-
-    eventSource.onerror = (error) => {
-      console.error('EventSource failed:', error);
-      eventSource.close();
-    };
-
-    return () => {
-      // Clean up the event source when the component is unmounted
-      eventSource.close();
-    };
-  }, []); // Empty dependency array ensures the effect runs only once
-
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -90,7 +66,10 @@ function Matches() {
           <button onClick={() => handleMove('rock')}>Rock</button>
           <button onClick={() => handleMove('paper')}>Paper</button>
           <button onClick={() => handleMove('scissors')}>Scissors</button>
-        </div>     
+        </div>
+        <button onClick={() => setTurn(turn + 1)}>Tour plus 1</button>     
+        <button onClick={() => setTurn(turn - 1)}>Tour moins 1</button>
+        <p>{turn}</p>     
         {/* <SubscribeMatche/>    */}
     </>
   );
