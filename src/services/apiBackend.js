@@ -60,8 +60,14 @@ export const getMatches = async () => {
 
 export const joinMatchesAPI = async () => {
   const storedToken = localStorage.getItem('token');
-  let idMatch;
+  let idMatch = localStorage.getItem('idMatch');
   
+  // Vérifie si l'ID du match existe dans le stockage local
+  if (idMatch) {
+    console.log("Already joined a match.");
+    return idMatch;
+  }
+
   const resp = await fetch("http://fauques.freeboxos.fr:3000/matches", {
     method: "POST",
     headers: {
@@ -69,16 +75,17 @@ export const joinMatchesAPI = async () => {
       "Authorization": `Bearer ${storedToken}`, 
     },
   });
+
   if (resp.ok) {
     const data = await resp.json();
     idMatch = data._id; 
     localStorage.setItem('idMatch', idMatch); 
     console.log(idMatch)
   }
- 
 
   return idMatch;
 };
+
 
 export const doTurn = async (turn, move) => {
   const storedToken = localStorage.getItem('token');

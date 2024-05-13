@@ -92,7 +92,7 @@ export default function AccordionUsage() {
         <Link to='/'>Home</Link>
         <Link to='/Matches'>Jouer</Link>
         <Link to='/profil'>Go profil</Link>
-        <Paper sx={{ width : '100vh' }}>
+        <Paper >
         {matches.length > 0 ? (
             matches.map((match, index) => (
             <Accordion key={index} sx={{ bgcolor: getBackgroundColor(countWins(match)[currentUser]) }}>

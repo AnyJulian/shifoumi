@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { enregistrement } from '../services/apiBackend';
 import { useNavigate } from 'react-router-dom';
 
-// TODO remove, this demo shouldn't need to reset the theme.
+
 
 const defaultTheme = createTheme();
 
@@ -30,7 +30,10 @@ function SignInSide() {
     };
   };
 
+
+
   return (
+    
     <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: '80vh', width : '100vh' }}>
         <CssBaseline />
