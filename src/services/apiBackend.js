@@ -58,6 +58,21 @@ export const getMatches = async () => {
   return resp.json();
 };
 
+export const getMatcheInfo = async () => {
+  const storedToken = localStorage.getItem('token');
+  const storedidMatch = localStorage.getItem('idMatch');
+  
+  const resp = await fetch(`http://fauques.freeboxos.fr:3000/matches/${storedidMatch}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${storedToken}`, 
+    },
+  });
+
+  return resp.json();
+};
+
 export const joinMatchesAPI = async () => {
   const storedToken = localStorage.getItem('token');
   let idMatch = localStorage.getItem('idMatch');

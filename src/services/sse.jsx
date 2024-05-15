@@ -1,29 +1,43 @@
 import React, { useEffect, useState } from 'react';
+import { fetchEventSource } from "@microsoft/fetch-event-source";
 
 const SubscribeMatchInfo = () => {
   const [data, setData] = useState(null);
   const storedIdMatch = localStorage.getItem('idMatch');
   const storedToken = localStorage.getItem('token');
 
-  console.log(storedIdMatch, storedToken)
-
   useEffect(() => {
-    const sse = new EventSource(`http://fauques.freeboxos.fr:3000/matches/${storedIdMatch}/subscribe`, {
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': `Bearer ${storedToken}`
-      }
-    });
-
-    sse.onmessage = (event) => {
-      const newData = getRealtimeData(JSON.parse(event.data));
-      console.log(newData)
-      setData(newData);
+    const fetchData = async () => {
+      await fetchEventSource(`http://fauques.freeboxos.fr:3000/matches/${storedIdMatch}/subscribe`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "text/event-stream",
+          'Authorization': `Bearer ${storedToken}`,
+        },
+        onopen(res) {
+          if (res.ok && res.status === 200) {
+            console.log("Connection made ", res);
+          } else if (
+            res.status >= 400 &&
+            res.status < 500 &&
+            res.status !== 429
+          ) {
+            console.log("Client side error ", res);
+          }
+        },
+        onmessage(event) {
+          const parsedData = JSON.parse(event.data);
+          setData(parsedData);
+        },
+        onclose() {
+          console.log("Connection closed by the server");
+        },
+        onerror(err) {
+          console.log("There was an error from server", err);
+        },
+      });
     };
-
-    return () => {
-      sse.close();
-    };
+    fetchData();
   }, [storedIdMatch, storedToken]);
 
   return (

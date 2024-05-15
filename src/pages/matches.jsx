@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { joinMatchesAPI, doTurn } from '../services/apiBackend';
-import SubscribeMatche from "../services/subscribe";
+import { joinMatchesAPI, doTurn, getMatcheInfo } from '../services/apiBackend';
+import SubscribeMatchInfo from "../services/sse";
 
 
 function Matches() {
@@ -69,8 +69,8 @@ function Matches() {
         </div>
         <button onClick={() => setTurn(turn + 1)}>Tour plus 1</button>     
         <button onClick={() => setTurn(turn - 1)}>Tour moins 1</button>
-        <p>{turn}</p>     
-        {/* <SubscribeMatche/>    */}
+        <p>{turn}</p>
+        <SubscribeMatchInfo/> 
     </>
   );
 }
