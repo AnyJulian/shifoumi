@@ -1,9 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { getMatches } from '../services/apiBackend';
 import MatchList from '../assets/matchesList';
 import ButtonPlay from "../assets/buttonPlay";
+import { Box, Typography, Link } from '@mui/material';
 
+const styles = {
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'fixed', // Ajoutez cette ligne
+    bottom: '8%', // Ajoutez cette ligne
+    width: '80vh', // Ajoutez cette ligne
+    zIndex: 1,
+  },
+};
+
+const texteMain = "#fffffe"
+const texteParagraph = "#a7a9be"
 
 function CompteUtilisateur() {
 
@@ -37,16 +51,12 @@ function CompteUtilisateur() {
 
   return (
     <>
-      <h1>Compte Utilisateur</h1>
-      <Link to='/'>Home</Link>
-      <Link to='/Matches'>Jouer</Link>
-      <Link to='/profil'>Go profil</Link>
-      {/* <ButtonPlay title='Jouer' chemin='/Matches'/> */}
-      <div>
-      <div>
-        <h1>Liste des matchs de {currentUser}</h1>
-        <MatchList matches={matches} />
-      </div>
+      <Typography variant='h1' color={texteMain}>Compte Utilisateur</Typography>
+      <Typography variant='h2' color={texteMain}>Liste des matchs de {currentUser}</Typography>
+      <Link variant='subtitle2' color={texteParagraph} href='/' >Changer d'utilisateur</Link>
+      <MatchList matches={matches} currentUser={currentUser} />
+      <div style={styles.container}>
+        <ButtonPlay title='Jouer' chemin='/Matches'/>
       </div>
     </>
   );
