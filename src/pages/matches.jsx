@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { joinMatchesAPI, doTurn, getMatcheInfo } from '../services/apiBackend';
+import { joinMatchesAPI, doTurn } from '../services/apiBackend';
 import SubscribeMatchInfo from "../services/sse";
-
+import { useNavigate } from 'react-router-dom';
 
 function Matches() {
 
@@ -18,6 +18,14 @@ function Matches() {
   const handleMove = async (move) => {
     const data = await doTurn(turn, move);
     return data;
+  };
+
+  const navigate = useNavigate();
+
+  const supprimerIdMatch = () => {
+    // Supprimer la clé "idMatch" du stockage local
+    localStorage.removeItem("idMatch");
+    navigate('/compteUtilisateur');
   };
 
   useEffect(() => {
@@ -71,6 +79,9 @@ function Matches() {
         <button onClick={() => setTurn(turn - 1)}>Tour moins 1</button>
         <p>{turn}</p>
         <SubscribeMatchInfo/> 
+
+        <button onClick={supprimerIdMatch}>Supprimer idMatch</button>
+        {/* <SubscribeMatche/>    */}
     </>
   );
 }

@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { useButtonContext } from '../context/ButtonContext';
 
-const ProgressButton = ({ id, customMessage }) => {
+const ProgressButton = ({ id, customMessage, onClick }) => {
   const [progress, setProgress] = useState(0);
   const [isActive, setIsActive] = useState(true);
   const intervalRef = useRef();
@@ -18,7 +18,10 @@ const ProgressButton = ({ id, customMessage }) => {
     clearInterval(intervalRef.current);
     if (progress === 100) {
       setIsActive(false);
-      disableAllButtonsExcept(id); // Désactiver tous les autres boutons sauf celui-ci
+      disableAllButtonsExcept(id);
+      if (onClick) {
+        onClick();
+      }
     } else {
       setProgress(0);
     }

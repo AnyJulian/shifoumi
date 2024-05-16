@@ -1,36 +1,26 @@
-// ButtonContext.js
+// Dans ButtonContext.js
+
 import React, { createContext, useContext, useState } from 'react';
 
-// Création d'un contexte pour gérer l'état des boutons
 const ButtonContext = createContext();
 
-// Hook personnalisé pour utiliser le contexte des boutons
-export const useButtonContext = () => {
-  const context = useContext(ButtonContext);
-  if (!context) {
-    throw new Error('useButtonContext doit être utilisé à l\'intérieur de ButtonProvider');
-  }
-  return context;
-};
-
-// Provider de contexte des boutons pour encapsuler les boutons
 export const ButtonProvider = ({ children }) => {
   const [activeButtonId, setActiveButtonId] = useState(null);
+  const [blocked, setBlocked] = useState(false); // Ajout de l'état pour gérer le blocage des boutons
 
-  const disableAllButtonsExcept = (buttonId) => {
-    setActiveButtonId(buttonId);
+  const disableAllButtonsExcept = (id) => {
+    setActiveButtonId(id);
   };
 
-  const contextValue = {
-    activeButtonId,
-    disableAllButtonsExcept,
+  const enableAllButtons = () => {
+    setActiveButtonId(null);
   };
 
   return (
-    <ButtonContext.Provider value={contextValue}>
+    <ButtonContext.Provider value={{ activeButtonId, disableAllButtonsExcept, blocked, setBlocked, enableAllButtons }}>
       {children}
     </ButtonContext.Provider>
   );
 };
 
-export default ButtonContext
+export const useButtonContext = () => useContext(ButtonContext);
