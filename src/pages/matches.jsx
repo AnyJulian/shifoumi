@@ -64,24 +64,14 @@ function Matches() {
       <Link to='/compteUtilisateur'>Historique de matches</Link>
       <Typography color="whitesmoke">{matches}</Typography>
       <Typography color="whitesmoke">{InfoMatches}</Typography>
-      <Typography color="whitesmoke">{currentUser()}</Typography>
+      {/* <Typography color="whitesmoke">{currentUser()}</Typography> */}
       
       <div>
       <h1>Match Details</h1>
       <p>ID: {match._id}</p>
       <h2>Players</h2>
       <p>User 1: {match.user1.username}</p>
-      <p>User 2: {match.user2.username}</p>
-      <h2>Turns</h2>
-      <ul>
-        {match.turns.length > 0 ? (
-          match.turns.map((turn, index) => (
-            <li key={index}>{JSON.stringify(turn)}</li>
-          ))
-        ) : (
-          <li>No turns available</li>
-        )}
-      </ul>
+      <p>{match.user2 && match.user2.username ? match.user2.username : "pas de 2ème joueur"}</p>
     </div>
       <div>
       </div>
