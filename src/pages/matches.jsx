@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { joinMatchesAPI, doTurn } from '../services/apiBackend';
+import { joinMatchesAPI, doTurn, getMatcheInfo } from '../services/apiBackend';
 import SubscribeMatchInfo from "../services/sse";
 import { useNavigate } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
+import currentUser from "../services/currentUser"
+
 
 function Matches() {
 
   const storedToken = localStorage.getItem('token');
   const storedidMatch = localStorage.getItem('idMatch');
 
+  const [match, setMatch] = useState(null);
   const [matches, setMatches] = useState([]);
+  const [InfoMatches, setInfoMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -23,18 +28,19 @@ function Matches() {
   const navigate = useNavigate();
 
   const supprimerIdMatch = () => {
-    // Supprimer la clé "idMatch" du stockage local
     localStorage.removeItem("idMatch");
     navigate('/compteUtilisateur');
   };
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await joinMatchesAPI();
-        setMatches([data]); // Les matches doivent être un tableau
+        const matchData = await getMatcheInfo();
+        setMatches([data]);
+        setMatch(matchData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching idMatch:', error);
         setError(error);
       } finally {
         setIsLoading(false);
@@ -54,21 +60,30 @@ function Matches() {
 
   return (
     <>
-      <h1>Matches</h1>
-      <Link to='/'>Home</Link>
+      <Typography variant="h1" color="whitesmoke">Matche</Typography>
+      <Link to='/compteUtilisateur'>Historique de matches</Link>
+      <Typography color="whitesmoke">{matches}</Typography>
+      <Typography color="whitesmoke">{InfoMatches}</Typography>
+      <Typography color="whitesmoke">{currentUser()}</Typography>
+      
       <div>
-        {matches.length > 0 ? (
-          matches.map((match, index) => (
-            <div key={index} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
-              <h2>Match {index + 1}</h2>
-              {match.user1 && <p><strong>Vous êtes:</strong> {match.user1.username}</p>}
-              {match.user2 && <p><strong>Votre adversaire est:</strong> {match.user2.username}</p>}
-              {match.turns && <p><strong>Numéro du tour:</strong> {match.turns.length + 1}</p>}
-            </div>
+      <h1>Match Details</h1>
+      <p>ID: {match._id}</p>
+      <h2>Players</h2>
+      <p>User 1: {match.user1.username}</p>
+      <p>User 2: {match.user2.username}</p>
+      <h2>Turns</h2>
+      <ul>
+        {match.turns.length > 0 ? (
+          match.turns.map((turn, index) => (
+            <li key={index}>{JSON.stringify(turn)}</li>
           ))
         ) : (
-          <p>No matches found.</p>
+          <li>No turns available</li>
         )}
+      </ul>
+    </div>
+      <div>
       </div>
         <div>
           <button onClick={() => handleMove('rock')}>Rock</button>

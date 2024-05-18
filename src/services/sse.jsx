@@ -16,7 +16,7 @@ const SubscribeMatchInfo = () => {
         },
         onopen(res) {
           if (res.ok && res.status === 200) {
-            console.log("Connection made ", res);
+            console.log("Connection en temps réel - maintient du service ok");
           } else if (
             res.status >= 400 &&
             res.status < 500 &&

@@ -63,22 +63,35 @@ export const getMatcheInfo = async () => {
   const storedToken = localStorage.getItem('token');
   const storedidMatch = localStorage.getItem('idMatch');
   
-  const resp = await fetch(`http://fauques.freeboxos.fr:3000/matches/${storedidMatch}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${storedToken}`, 
-    },
-  });
+  try {
+    const resp = await fetch(`http://fauques.freeboxos.fr:3000/matches/${storedidMatch}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${storedToken}`, 
+      },
+    });
 
-  return resp.json();
+    if (!resp.ok) {
+      throw new Error(`HTTP error! status: ${resp.status}`);
+    }
+
+    const data = await resp.json();
+
+    // Retourner l'objet data directement
+    return data;
+  } catch (error) {
+    console.error("Error fetching match info:", error);
+    throw error;
+  }
 };
+
+
 
 export const joinMatchesAPI = async (attempt = 1) => {
   const storedToken = localStorage.getItem('token');
   let idMatch = localStorage.getItem('idMatch');
   
-  // Vérifie si l'ID du match existe dans le stockage local
   if (idMatch) {
     console.log("Already joined a match.");
     return idMatch;
