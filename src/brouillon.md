@@ -30,3 +30,6 @@ const ProgressButton = () => {
 };
 
 export default ProgressButton;
+
+
+Erreur dans la création d'un match, il dit bad request mais enfait c'est quand un match à déjà été rejoins du côté server. Nous on vérifie que si côté client on a un idMatch alors on peu le rejoindre, mais que si un match est déjà rejoins côté client, bah on nous renvoie pas l'id du match rejoins

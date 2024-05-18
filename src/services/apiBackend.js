@@ -1,4 +1,5 @@
 let token;
+import { setLastMatchIdToLocalStorage } from './lastIdMatch';
 
 export const enregistrement = async (username2, password2, navigate) => {
   const resp = await fetch("http://fauques.freeboxos.fr:3000/register", {
@@ -73,7 +74,7 @@ export const getMatcheInfo = async () => {
   return resp.json();
 };
 
-export const joinMatchesAPI = async () => {
+export const joinMatchesAPI = async (attempt = 1) => {
   const storedToken = localStorage.getItem('token');
   let idMatch = localStorage.getItem('idMatch');
   
@@ -95,10 +96,17 @@ export const joinMatchesAPI = async () => {
     const data = await resp.json();
     idMatch = data._id; 
     localStorage.setItem('idMatch', idMatch); 
-    console.log(idMatch)
+    console.log(idMatch);
+    return idMatch;
   }
 
-  return idMatch;
+  if (resp.status == 400 && attempt < 3) {
+    console.log("Status 400: Trying to update local storage and retry...");
+    await setLastMatchIdToLocalStorage();
+    return joinMatchesAPI(attempt + 1);  // Relance la fonction avec une tentative augmentée
+  }
+
+  throw new Error('Failed to join match after 3 attempts.');
 };
 
 
