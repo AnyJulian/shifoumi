@@ -31,6 +31,9 @@ function Matches() {
   const handleMove = async (move) => {
     console.log("Faire un tour avec " + move)
     const data = await doTurn(turn, move);
+    if (turn < 3) { 
+      setTurn(turn + 1);
+    }
     return data;
   };
 
@@ -90,6 +93,7 @@ function Matches() {
       <p>User 1 : {match.user1.username}</p>
       <p>User 2 : {match.user2 && match.user2.username ? match.user2.username : "pas de 2ème joueur"}</p>
       <p>Opposent : {getOpponentUsername(match, currentUser())}</p>
+      <h2>Vous êtes au tours : {turn}</h2>
     </div>
       <div>
       </div>
@@ -116,9 +120,9 @@ function Matches() {
             />
           </Grid>
         </Grid>
-        <button onClick={() => setTurn(turn + 1)}>Tour plus 1</button>     
-        <button onClick={() => setTurn(turn - 1)}>Tour moins 1</button>
-        <p>{turn}</p>
+        {/*<button onClick={() => setTurn(turn + 1)}>Tour plus 1</button>     
+        <button onClick={() => setTurn(turn - 1)}>Tour moins 1</button> */}
+        
         <SubscribeMatchInfo/> 
 
         <button onClick={supprimerIdMatch}>Supprimer idMatch</button>
