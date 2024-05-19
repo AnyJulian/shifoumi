@@ -7,7 +7,6 @@ export default function currentUser() {
       }
 
     const user = JSON.parse(atob(userToken.split('.')[1]));
-    currentUser = user.username;
 
-    return currentUser
+    return user.username
 }

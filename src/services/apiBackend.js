@@ -78,7 +78,6 @@ export const getMatcheInfo = async () => {
 
     const data = await resp.json();
 
-    // Retourner l'objet data directement
     return data;
   } catch (error) {
     console.error("Error fetching match info:", error);
@@ -138,5 +137,3 @@ export const doTurn = async (turn, move) => {
 
   return resp.json();
 };
-
-///fonction faire un tour, avec comme parametre, numéro du tour, id du match, body move du tour

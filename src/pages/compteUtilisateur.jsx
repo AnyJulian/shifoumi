@@ -52,8 +52,8 @@ function CompteUtilisateur() {
 
   return (
     <>
-      <Typography variant='h1' color={texteMain}>Compte Utilisateur</Typography>
-      <Typography variant='h2' color={texteMain}>Liste des matchs de {currentUser}</Typography>
+      <Typography variant='h1' color={texteMain}>Bienvenue {currentUser}</Typography>
+      <Typography variant='h3' color={texteMain}>Historique de matchs</Typography>
       <Link variant='subtitle2' color={texteParagraph} href='/' >Changer d'utilisateur</Link>
       <MatchList matches={matches} currentUser={currentUser} />
       <div style={styles.container}>
