@@ -1,21 +1,18 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Box, Typography, Grid } from '@mui/material';
+import { joinMatchesAPI, doTurn, getMatcheInfo } from '../services/apiBackend';
+import SubscribeMatchInfo from "../services/sse";
+import currentUser from "../services/currentUser";
+import ButtonEmote from "../assets/buttonEmote";
 import ImageLeaveDefault from '../img/leave_default.png';
 import ImageLeaveHappy from '../img/leave_happy.png';
 import ImagescissorsDefault from '../img/scissors_default.png';
 import ImagescissorsHappy from '../img/scissors_happy.png';
 import ImagestoneDefault from '../img/stone_default.png';
 import ImagestoneHappy from '../img/stone_happy.png';
-import React, { useState, useEffect } from 'react';
-import ButtonEmote from "../assets/buttonEmote";
-import { Link } from 'react-router-dom';
-import { joinMatchesAPI, doTurn, getMatcheInfo } from '../services/apiBackend';
-import SubscribeMatchInfo from "../services/sse";
-import { useNavigate } from 'react-router-dom';
-import { Box, Typography, Grid } from '@mui/material';
-import currentUser from "../services/currentUser"
-
 
 function Matches() {
-
   const storedToken = localStorage.getItem('token');
   const storedidMatch = localStorage.getItem('idMatch');
 
@@ -24,20 +21,19 @@ function Matches() {
   const [InfoMatches, setInfoMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isHovered, setIsHovered] = useState(false);
-
   const [turn, setTurn] = useState(1);
+  const [currentTurn, setCurrentTurn] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleMove = async (move) => {
-    console.log("Faire un tour avec " + move)
+    console.log("Faire un tour avec " + move);
     const data = await doTurn(turn, move);
     if (turn < 3) { 
       setTurn(turn + 1);
     }
     return data;
   };
-
-  const navigate = useNavigate();
 
   const supprimerIdMatch = () => {
     localStorage.removeItem("idMatch");
@@ -46,12 +42,12 @@ function Matches() {
 
   const getOpponentUsername = (match, currentUser) => {
     if (match.user1 && match.user2) {
-        return match.user1.username !== currentUser ? match.user1.username : match.user2.username;
+      return match.user1.username !== currentUser ? match.user1.username : match.user2.username;
     } else {
-        return "Unknown";
+      return "Unknown";
     }
-};
-  
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -78,55 +74,57 @@ function Matches() {
     return <p>Error: {error.message}</p>;
   }
 
+  const currentPlayer = currentUser();
+  const isCurrentUserTurn = (currentTurn === turn);
+
   return (
     <>
       <Typography variant="h1" color="whitesmoke">Matche</Typography>
       <Link to='/compteUtilisateur'>Historique de matches</Link>
       <Typography color="whitesmoke">{matches}</Typography>
       <Typography color="whitesmoke">{InfoMatches}</Typography>
-      <Typography color="whitesmoke">{currentUser()}</Typography>
-      
-      <div>
-      <h1>Match Details</h1>
-      <p>ID: {match._id}</p>
-      <h2>Players</h2>
-      <p>User 1 : {match.user1.username}</p>
-      <p>User 2 : {match.user2 && match.user2.username ? match.user2.username : "pas de 2ème joueur"}</p>
-      <p>Opposent : {getOpponentUsername(match, currentUser())}</p>
-      <h2>Vous êtes au tours : {turn}</h2>
-    </div>
-      <div>
-      </div>
-        <Grid container spacing={2}>
-          <Grid xs={4}>
-            <ButtonEmote 
-              defaultImage={ImageLeaveDefault}
-              hoverImage={ImageLeaveHappy}
-              effect={() => handleMove('paper')}
-            />
-          </Grid>
-          <Grid xs={4}>
-            <ButtonEmote 
-              defaultImage={ImagescissorsDefault}
-              hoverImage={ImagescissorsHappy}
-              effect={() => handleMove('scissors')}
-            />
-          </Grid>
-          <Grid xs={4}>
-            <ButtonEmote 
-              defaultImage={ImagestoneDefault}
-              hoverImage={ImagestoneHappy}
-              effect={() => handleMove('rock')}
-            />
-          </Grid>
-        </Grid>
-        {/*<button onClick={() => setTurn(turn + 1)}>Tour plus 1</button>     
-        <button onClick={() => setTurn(turn - 1)}>Tour moins 1</button> */}
-        
-        <SubscribeMatchInfo/> 
+      <Typography color="whitesmoke">{currentPlayer}</Typography>
 
-        <button onClick={supprimerIdMatch}>Supprimer idMatch</button>
-        {/* <SubscribeMatche/>    */}
+      <div>
+        <h1>Match Details</h1>
+        <p>ID: {match._id}</p>
+        <h2>Players</h2>
+        <p>User 1: {match.user1.username}</p>
+        <p>User 2: {match.user2 && match.user2.username ? match.user2.username : "pas de 2ème joueur"}</p>
+        <p>Opposent: {getOpponentUsername(match, currentPlayer)}</p>
+        <h2>Vous êtes au tour : {turn}</h2>
+      </div>
+      
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <ButtonEmote 
+            defaultImage={ImageLeaveDefault}
+            hoverImage={ImageLeaveHappy}
+            effect={() => handleMove('paper')}
+            disabled={!isCurrentUserTurn}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <ButtonEmote 
+            defaultImage={ImagescissorsDefault}
+            hoverImage={ImagescissorsHappy}
+            effect={() => handleMove('scissors')}
+            disabled={!isCurrentUserTurn}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <ButtonEmote 
+            defaultImage={ImagestoneDefault}
+            hoverImage={ImagestoneHappy}
+            effect={() => handleMove('rock')}
+            disabled={!isCurrentUserTurn}
+          />
+        </Grid>
+      </Grid>
+
+      <SubscribeMatchInfo setCurrentTurn={setCurrentTurn} /> 
+
+      <button onClick={supprimerIdMatch}>Supprimer idMatch</button>
     </>
   );
 }
