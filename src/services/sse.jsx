@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 
-const SubscribeMatchInfo = () => {
+const SubscribeMatchInfo = ({ setCurrentTurn, setPlayer1, setPlayer2 }) => {
   const [data, setData] = useState(null);
-  const [currentTurn, setCurrentTurn] = useState(null);
-  const [player1, setPlayer1] = useState(null);
-  const [player2, setPlayer2] = useState(null);
+  const [currentTurn, setLocalCurrentTurn] = useState(null);
+  const [localPlayer1, setLocalPlayer1] = useState(null);
+  const [localPlayer2, setLocalPlayer2] = useState(null);
   const [moves, setMoves] = useState([]);
   const [winner, setWinner] = useState(null);
   const storedIdMatch = localStorage.getItem('idMatch');
@@ -32,36 +32,14 @@ const SubscribeMatchInfo = () => {
         },
         onmessage(event) {
           const parsedData = JSON.parse(event.data);
-          setData(parsedData);
+          console.log("Received event:", parsedData);
 
-          switch (parsedData.type) {
-            case 'PLAYER1_JOIN':
-              setPlayer1(parsedData.payload.user);
-              break;
-            case 'PLAYER2_JOIN':
-              setPlayer2(parsedData.payload.user);
-              break;
-            case 'NEW_TURN':
-              setCurrentTurn(parsedData.payload.turnId);
-              break;
-            case 'PLAYER1_MOVED':
-            case 'PLAYER2_MOVED':
-              setMoves((prevMoves) => [
-                ...prevMoves,
-                {
-                  player: parsedData.type === 'PLAYER1_MOVED' ? 'player1' : 'player2',
-                  turn: parsedData.payload.turn,
-                },
-              ]);
-              break;
-            case 'TURN_ENDED':
-              setCurrentTurn(parsedData.payload.newTurnId);
-              break;
-            case 'MATCH_ENDED':
-              setWinner(parsedData.payload.winner);
-              break;
-            default:
-              break;
+          if (Array.isArray(parsedData)) {
+            parsedData.forEach(item => {
+              handleEvent(item);
+            });
+          } else {
+            handleEvent(parsedData);
           }
         },
         onclose() {
@@ -72,8 +50,48 @@ const SubscribeMatchInfo = () => {
         },
       });
     };
+
+    const handleEvent = (parsedData) => {
+      if (parsedData.payload.turnId > 3) {
+        return; // Stop updating if turn is greater than 3
+      }
+      switch (parsedData.type) {
+        case 'PLAYER1_JOIN':
+          setLocalPlayer1(parsedData.payload.user);
+          setPlayer1(parsedData.payload.user); // Update the parent's state
+          break;
+        case 'PLAYER2_JOIN':
+          setLocalPlayer2(parsedData.payload.user);
+          setPlayer2(parsedData.payload.user); // Update the parent's state
+          break;
+        case 'NEW_TURN':
+          setLocalCurrentTurn(parsedData.payload.turnId);
+          setCurrentTurn(parsedData.payload.turnId); // Update the parent's state
+          break;
+        case 'PLAYER1_MOVED':
+        case 'PLAYER2_MOVED':
+          setMoves((prevMoves) => [
+            ...prevMoves,
+            {
+              player: parsedData.type === 'PLAYER1_MOVED' ? 'player1' : 'player2',
+              turn: parsedData.payload.turn,
+            },
+          ]);
+          break;
+        case 'TURN_ENDED':
+          setLocalCurrentTurn(parsedData.payload.newTurnId);
+          setCurrentTurn(parsedData.payload.newTurnId); // Update the parent's state
+          break;
+        case 'MATCH_ENDED':
+          setWinner(parsedData.payload.winner);
+          break;
+        default:
+          break;
+      }
+    };
+
     fetchData();
-  }, [storedIdMatch, storedToken]);
+  }, [storedIdMatch, storedToken, setCurrentTurn, setPlayer1, setPlayer2]);
 
   return (
     <div>
@@ -84,8 +102,8 @@ const SubscribeMatchInfo = () => {
       )}
       <div>
         <h2>Players</h2>
-        <p>Player 1: {player1 ? player1 : 'Waiting for player 1 to join...'}</p>
-        <p>Player 2: {player2 ? player2 : 'Waiting for player 2 to join...'}</p>
+        <p>Player 1: {localPlayer1 ? localPlayer1 : 'Waiting for player 1 to join...'}</p>
+        <p>Player 2: {localPlayer2 ? localPlayer2 : 'Waiting for player 2 to join...'}</p>
       </div>
       <div>
         <h2>Moves</h2>

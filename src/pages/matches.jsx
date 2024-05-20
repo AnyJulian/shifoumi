@@ -23,15 +23,14 @@ function Matches() {
   const [error, setError] = useState(null);
   const [turn, setTurn] = useState(1);
   const [currentTurn, setCurrentTurn] = useState(null);
+  const [player1, setPlayer1] = useState(null);
+  const [player2, setPlayer2] = useState(null);
 
   const navigate = useNavigate();
 
   const handleMove = async (move) => {
     console.log("Faire un tour avec " + move);
-    const data = await doTurn(turn, move);
-    if (turn < 3) { 
-      setTurn(turn + 1);
-    }
+    const data = await doTurn(currentTurn, move); 
     return data;
   };
 
@@ -87,12 +86,13 @@ function Matches() {
 
       <div>
         <h1>Match Details</h1>
-        <p>ID: {match._id}</p>
+        <p>ID: {match?._id}</p>
         <h2>Players</h2>
-        <p>User 1: {match.user1.username}</p>
-        <p>User 2: {match.user2 && match.user2.username ? match.user2.username : "pas de 2ème joueur"}</p>
+        <p>User 1: {player1 ? player1 : "Waiting for player 1 to join..."}</p>
+        <p>User 2: {player2 ? player2 : "Waiting for player 2 to join..."}</p>
         <p>Opposent: {getOpponentUsername(match, currentPlayer)}</p>
-        <h2>Vous êtes au tour : {turn}</h2>
+        <h2>Vous êtes au tour : {currentTurn <= 3 ? currentTurn : 3}</h2>
+
       </div>
       
       <Grid container spacing={2}>
@@ -101,7 +101,7 @@ function Matches() {
             defaultImage={ImageLeaveDefault}
             hoverImage={ImageLeaveHappy}
             effect={() => handleMove('paper')}
-            disabled={!isCurrentUserTurn}
+            disabled={!isCurrentUserTurn || currentTurn > 3}
           />
         </Grid>
         <Grid item xs={4}>
@@ -109,7 +109,7 @@ function Matches() {
             defaultImage={ImagescissorsDefault}
             hoverImage={ImagescissorsHappy}
             effect={() => handleMove('scissors')}
-            disabled={!isCurrentUserTurn}
+            disabled={!isCurrentUserTurn || currentTurn > 3}
           />
         </Grid>
         <Grid item xs={4}>
@@ -117,14 +117,17 @@ function Matches() {
             defaultImage={ImagestoneDefault}
             hoverImage={ImagestoneHappy}
             effect={() => handleMove('rock')}
-            disabled={!isCurrentUserTurn}
+            disabled={!isCurrentUserTurn || currentTurn > 3}
           />
         </Grid>
       </Grid>
+      <button onClick={supprimerIdMatch}>Arrêter le match</button>
 
-      <SubscribeMatchInfo setCurrentTurn={setCurrentTurn} /> 
-
-      <button onClick={supprimerIdMatch}>Supprimer idMatch</button>
+      <SubscribeMatchInfo 
+        setCurrentTurn={setCurrentTurn}
+        setPlayer1={setPlayer1}
+        setPlayer2={setPlayer2}
+      />
     </>
   );
 }
