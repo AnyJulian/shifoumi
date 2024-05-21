@@ -3,6 +3,8 @@ import { getMatches } from '../services/apiBackend';
 import MatchList from '../assets/matchesList';
 import ButtonPlay from "../assets/buttonPlay";
 import { Box, Typography, Link } from '@mui/material';
+import { useNavigate } from "react-router-dom";
+
 
 
 const styles = {
@@ -25,6 +27,7 @@ function CompteUtilisateur() {
   const [matches, setMatches] = useState([]);
   const [currentUser, setCurrentUser] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +57,7 @@ function CompteUtilisateur() {
     <>
       <Typography variant='h1' color={texteMain}>Bienvenue {currentUser}</Typography>
       <Typography variant='h3' color={texteMain}>Historique de matchs</Typography>
-      <Link variant='subtitle2' color={texteParagraph} href='/' >Changer d'utilisateur</Link>
+      <Link variant='subtitle2' color={texteParagraph} onClick={() => (navigate(`/connexion`))} >Changer d'utilisateur</Link>
       <MatchList matches={matches} currentUser={currentUser} />
       <div style={styles.container}>
         <ButtonPlay title='Jouer' chemin='/Matches'/>

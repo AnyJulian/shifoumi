@@ -15,10 +15,10 @@ const theme = createTheme({
   palette: {
     orange: {
       main: '#ff8906',
-      secondary: '#ff8906',
-      light: '#ff8906',
-      dark: '#ff8906',
-      contrastText: '#ff8906',
+      secondary: 'black',
+      light: 'red',
+      dark: '#D67000',
+      contrastText: 'white',
     },
   },
 });
@@ -70,7 +70,7 @@ function SignInSide() {
             <Avatar sx={{ m: 1, bgcolor: '#ff8906' }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
+            <Typography component="h1" variant="h5" color={'black'}>
               Connexion
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -104,7 +104,8 @@ function SignInSide() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2, color: "#fffffe", backgroundColor: "#ff8906" }}
+                color="orange"
+                sx={{ mt: 3, mb: 2}}
               >
                 Sign In
               </Button>

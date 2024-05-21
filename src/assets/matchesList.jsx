@@ -7,7 +7,7 @@ const MatchList = ({ matches, currentUser }) => {
 
     const getBackgroundColor = (match, currentUser) => {
         if (!match.winner) {
-            return "#fffffe"; // Match non joué
+            return "#B5B5B5"; // Match non joué
         } else if (match.winner.username === currentUser) {
             return "#ff8906"; // Match gagné par currentUser
         } else {
