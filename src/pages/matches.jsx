@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Typography, Grid, Modal, CircularProgress } from '@mui/material';
 import { joinMatchesAPI, doTurn, getMatcheInfo } from '../services/apiBackend';
-import SubscribeMatchInfo from "../services/sse";
+import subscribeToMatchInfo from "../services/sse";
 import currentUser from "../services/currentUser";
 import ButtonEmote from "../assets/buttonEmote";
 import ImageLeaveDefault from '../img/leave_default.png';
@@ -18,19 +18,20 @@ function Matches() {
 
   const [match, setMatch] = useState(null);
   const [matches, setMatches] = useState([]);
-  const [InfoMatches, setInfoMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [turn, setTurn] = useState(1);
   const [currentTurn, setCurrentTurn] = useState(null);
   const [player1, setPlayer1] = useState(null);
   const [player2, setPlayer2] = useState(null);
+  const [moves, setMoves] = useState([]);
+  const [winner, setWinner] = useState(null);
 
   const navigate = useNavigate();
 
   const handleMove = async (move) => {
     console.log("Faire un tour avec " + move);
-    const data = await doTurn(currentTurn, move); 
+    const data = await doTurn(currentTurn, move);
     return data;
   };
 
@@ -65,6 +66,45 @@ function Matches() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const handleEvent = (parsedData) => {
+      if (parsedData.payload.turnId > 3) {
+        return; // Stop updating if turn is greater than 3
+      }
+      switch (parsedData.type) {
+        case 'PLAYER1_JOIN':
+          setPlayer1(parsedData.payload.user);
+          break;
+        case 'PLAYER2_JOIN':
+          setPlayer2(parsedData.payload.user);
+          break;
+        case 'NEW_TURN':
+          setCurrentTurn(parsedData.payload.turnId);
+          break;
+        case 'PLAYER1_MOVED':
+        case 'PLAYER2_MOVED':
+          setMoves((prevMoves) => [
+            ...prevMoves,
+            {
+              player: parsedData.type === 'PLAYER1_MOVED' ? 'player1' : 'player2',
+              turn: parsedData.payload.turn,
+            },
+          ]);
+          break;
+        case 'TURN_ENDED':
+          setCurrentTurn(parsedData.payload.newTurnId);
+          break;
+        case 'MATCH_ENDED':
+          setWinner(parsedData.payload.winner);
+          break;
+        default:
+          break;
+      }
+    };
+
+    subscribeToMatchInfo({ storedIdMatch: storedidMatch, storedToken, handleEvent });
+  }, [storedidMatch, storedToken]);
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -78,23 +118,43 @@ function Matches() {
 
   return (
     <>
-      <Typography variant="h1" color="whitesmoke">Matche</Typography>
       <Link to='/compteUtilisateur'>Historique de matches</Link>
-      <Typography color="whitesmoke">{matches}</Typography>
-      <Typography color="whitesmoke">{InfoMatches}</Typography>
-      <Typography color="whitesmoke">{currentPlayer}</Typography>
+      <Typography variant="h1" color="whitesmoke">Matche contre {getOpponentUsername(match, currentPlayer)}</Typography>
+
+      <Modal
+        open={!player2}
+        aria-labelledby="waiting-modal-title"
+        aria-describedby="waiting-modal-description"
+      >
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+          bgcolor="rgba(0, 0, 0, 0.7)"
+        >
+          <Box
+            bgcolor="background.paper"
+            p={4}
+            borderRadius={2}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+          >
+            <Typography id="waiting-modal-title" variant="h6" component="h2">
+              {player2 ? 'Joueur trouvé!' : 'En attente de joueurs...'}
+            </Typography>
+            {!player2 && <CircularProgress />}
+          </Box>
+        </Box>
+      </Modal>
 
       <div>
-        <h1>Match Details</h1>
-        <p>ID: {match?._id}</p>
-        <h2>Players</h2>
-        <p>User 1: {player1 ? player1 : "Waiting for player 1 to join..."}</p>
         <p>User 2: {player2 ? player2 : "Waiting for player 2 to join..."}</p>
         <p>Opposent: {getOpponentUsername(match, currentPlayer)}</p>
         <h2>Vous êtes au tour : {currentTurn <= 3 ? currentTurn : 3}</h2>
-
       </div>
-      
+
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <ButtonEmote 
@@ -121,13 +181,24 @@ function Matches() {
           />
         </Grid>
       </Grid>
+
       <button onClick={supprimerIdMatch}>Arrêter le match</button>
 
-      <SubscribeMatchInfo 
-        setCurrentTurn={setCurrentTurn}
-        setPlayer1={setPlayer1}
-        setPlayer2={setPlayer2}
-      />
+      <div>
+        <h2>Moves</h2>
+        <ul>
+          {moves.map((move, index) => (
+            <li key={index}>
+              {move.player} moved on turn {move.turn}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h2>Winner</h2>
+        <p>{winner ? winner : 'No winner yet'}</p>
+      </div>
     </>
   );
 }
