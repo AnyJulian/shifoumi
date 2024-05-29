@@ -34,12 +34,10 @@ const MatchList = ({ matches, currentUser }) => {
                 aria-controls={match._id}
                 id={match._id}
                 >
-                Match id {match._id}
+                Adversaire : {getOpponentUsername(match, currentUser)}
             </AccordionSummary>
             <AccordionDetails>
-            <h3>Adversaire:</h3>
-            <p>{getOpponentUsername(match, currentUser)}</p>
-            <p>Winner: {match.winner ? match.winner.username : "Match non joué"}</p>
+            <p>Vainqueur :{match.winner ? match.winner.username : "Match non joué"}</p>
             <div>
                 <h3>Turns:</h3>
                 <ul>
@@ -54,7 +52,7 @@ const MatchList = ({ matches, currentUser }) => {
         </Accordion>
       ))
     ) : (
-        <p>{matches.length === 0 ? 'Vous n\'avez jamais joué.' : 'Chargement des données...'}</p>
+        <p>{matches.length === 0 ? 'Vous n\'avez jamais joué. <br/>Jouez un match' : 'Chargement des données...'}</p>
     )}
   </div>
   );

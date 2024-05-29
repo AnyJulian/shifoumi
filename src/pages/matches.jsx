@@ -141,7 +141,7 @@ function Matches() {
             flexDirection="column"
             alignItems="center"
           >
-            <Typography id="waiting-modal-title" variant="h6" component="h2">
+            <Typography id="waiting-modal-title" variant="h6" component="h2" color={"black"}>
               {player2 ? 'Joueur trouvé!' : 'En attente de joueurs...'}
             </Typography>
             {!player2 && <CircularProgress />}
