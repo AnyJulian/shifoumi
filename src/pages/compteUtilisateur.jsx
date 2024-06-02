@@ -4,7 +4,7 @@ import MatchList from '../assets/matchesList';
 import ButtonPlay from "../assets/buttonPlay";
 import { Box, Typography, Link } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 
 
 const styles = {
@@ -55,10 +55,14 @@ function CompteUtilisateur() {
 
   return (
     <>
-      <Typography variant='h1' color={texteMain}>Bienvenue {currentUser}</Typography>
-      <Typography variant='h3' color={texteMain}>Historique de matchs</Typography>
-      <Link variant='subtitle2' color={texteParagraph} onClick={() => (navigate(`/connexion`))} >Changer d'utilisateur</Link>
-
+      <Box display="flex" sx={{ color:texteParagraph }}>
+        <KeyboardDoubleArrowLeftIcon />
+        <Link variant='subtitle2' color={texteParagraph} onClick={() => (navigate(`/connexion`))} >Changer d'utilisateur</Link>
+      </Box>
+      <Box sx={{my:10}}>
+        <Typography sx={{ fontFamily: 'Montserrat', textAlign:'center' }} variant='h1' color={texteMain}>Bienvenue {currentUser}</Typography>
+        <Typography sx={{ fontFamily: 'Montserrat', textAlign:'center' }} variant='h4' color={texteMain}>Votre historique de matchs</Typography>
+      </Box>
       <MatchList matches={matches} currentUser={currentUser} />
 
       <div style={styles.container}>

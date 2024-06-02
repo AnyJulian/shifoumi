@@ -14,10 +14,10 @@ import { ThemeProvider, createTheme } from "@mui/material";
 const theme = createTheme({
   palette: {
     orange: {
-      main: '#ff8906',
+      main: '#61dafb',
       secondary: 'black',
       light: 'red',
-      dark: '#D67000',
+      dark: '#f2056f',
       contrastText: 'white',
     },
   },
@@ -61,10 +61,10 @@ function SignInSide() {
               
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: '#ff8906' }}>
+            <Avatar sx={{ m: 1, bgcolor: '#61dafb' }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5" color={'white'}>
+            <Typography component="h1" variant="h5" color={'white'} sx={{ fontFamily: 'Montserrat' }}>
               Connexion
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>

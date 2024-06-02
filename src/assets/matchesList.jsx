@@ -2,6 +2,8 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Typography } from '@mui/material';
+
 
 const MatchList = ({ matches, currentUser }) => {
 
@@ -51,7 +53,7 @@ const MatchList = ({ matches, currentUser }) => {
     };
 
     return (
-        <div style={{ width: "80vh" }}>
+        <div style={{ width: "80vh", paddingBottom: '34%' }}>
             {matches.length > 0 ? (
                 matches.map((match) => (
                     <Accordion key={match._id} sx={getMatchStyles(match, currentUser)}>
@@ -78,7 +80,7 @@ const MatchList = ({ matches, currentUser }) => {
                     </Accordion>
                 ))
             ) : (
-                <p>{matches.length === 0 ? 'Vous n\'avez jamais joué. <br/>Jouez un match' : 'Chargement des données...'}</p>
+                <Typography sx={{ fontFamily: 'Montserrat', textAlign:'center' }}>{matches.length === 0 ? 'Aucun match joué chef.' : 'Chargement des données...'}</Typography>
             )}
         </div>
     );

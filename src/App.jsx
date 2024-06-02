@@ -24,7 +24,7 @@ function App() {
             <Route path='*' element={<NotFound />}/>
         </Routes>
       </BrowserRouter>
-      <div style={{height : "100vh", width : "100vw", position:"absolute", top:"0", left:"0", zIndex:"-10"}}>
+      <div style={{height : "100vh", width : "100vw", position:"fixed", top:"0", left:"0", zIndex:"-10"}}>
         <Scene />
     </div>
     </>
