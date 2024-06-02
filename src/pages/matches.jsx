@@ -41,11 +41,8 @@ function Matches() {
   };
 
   const getOpponentUsername = (match, currentUser) => {
-    if (match.user1 && match.user2) {
-      return match.user1.username !== currentUser ? match.user1.username : match.user2.username;
-    } else {
-      return "Unknown";
-    }
+    if (!player1 || !player2) return "Waiting for player 2 to join...";
+    return currentUser === player2 ? player1 : player2;
   };
 
   useEffect(() => {
@@ -119,7 +116,9 @@ function Matches() {
   return (
     <>
       <Link to='/compteUtilisateur'>Historique de matches</Link>
-      <Typography variant="h1" color="whitesmoke">Matche contre {getOpponentUsername(match, currentPlayer)}</Typography>
+      <Typography variant="h1" color="whitesmoke">
+        Match contre {getOpponentUsername(match, currentPlayer)}
+      </Typography>
 
       <Modal
         open={!player2}
@@ -151,7 +150,6 @@ function Matches() {
 
       <div>
         <p>User 2: {player2 ? player2 : "Waiting for player 2 to join..."}</p>
-        <p>Opposent: {getOpponentUsername(match, currentPlayer)}</p>
         <h2>Vous êtes au tour : {currentTurn <= 3 ? currentTurn : 3}</h2>
       </div>
 
