@@ -6,6 +6,8 @@ import Connexion from './pages/Connexion'
 import Profil from './pages/Profil'
 import NewHome from './pages/newHome'
 import NotFound from './pages/NotFound'
+import Scene from "./assets/scene";
+
 
 function App() {
 
@@ -22,6 +24,9 @@ function App() {
             <Route path='*' element={<NotFound />}/>
         </Routes>
       </BrowserRouter>
+      <div style={{height : "100vh", width : "100vw", position:"absolute", top:"0", left:"0", zIndex:"-10"}}>
+        <Scene />
+    </div>
     </>
   )
 }

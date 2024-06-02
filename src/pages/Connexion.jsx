@@ -42,35 +42,29 @@ function SignInSide() {
   return (
     
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '80vh', width : '100vh' }}>
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: 'url(https://source.unsplash.com/collection/2371311)',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid item xs={12} sm={8} md={5} elevation={6} square>
           <Box
             sx={{
-              my: 8,
+              my: "50%",
               mx: 4,
+              p:3,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              background: 'rgba(255, 255, 255, 0.21)',
+              borderRadius: '16px',
+              boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+              backdropFilter: 'blur(6.7px)',
+              WebkitBackdropFilter: 'blur(6.7px)',
+              border: '1px solid rgba(255, 255, 255, 0.4)',
+              color:'white',
+              
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: '#ff8906' }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5" color={'black'}>
+            <Typography component="h1" variant="h5" color={'white'}>
               Connexion
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -112,7 +106,6 @@ function SignInSide() {
             </Box>
           </Box>
         </Grid>
-      </Grid>
     </ThemeProvider>
   );
 }

@@ -12,9 +12,9 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'fixed', // Ajoutez cette ligne
-    bottom: '8%', // Ajoutez cette ligne
-    width: '80vh', // Ajoutez cette ligne
+    position: 'fixed', 
+    bottom: '8%',
+    width: '80vh', 
     zIndex: 1,
   },
 };
@@ -58,7 +58,9 @@ function CompteUtilisateur() {
       <Typography variant='h1' color={texteMain}>Bienvenue {currentUser}</Typography>
       <Typography variant='h3' color={texteMain}>Historique de matchs</Typography>
       <Link variant='subtitle2' color={texteParagraph} onClick={() => (navigate(`/connexion`))} >Changer d'utilisateur</Link>
+
       <MatchList matches={matches} currentUser={currentUser} />
+
       <div style={styles.container}>
         <ButtonPlay title='Jouer' chemin='/Matches'/>
       </div>

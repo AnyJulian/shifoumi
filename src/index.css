@@ -146,12 +146,12 @@ html {
 }
 
 body {
-  min-height: 100vh;
   display: flex;
   font-family: "Inter", Arial;
   justify-content: center;
   align-items: center;
   background: #0f0e17;
+  margin: 0px;
 }
 
 /* devanagari */

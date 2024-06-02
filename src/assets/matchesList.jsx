@@ -5,13 +5,40 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const MatchList = ({ matches, currentUser }) => {
 
-    const getBackgroundColor = (match, currentUser) => {
+    const getMatchStyles = (match, currentUser) => {
         if (!match.winner) {
-            return "#B5B5B5"; // Match non joué
+            return {
+                background: 'rgba(255, 255, 255, 0.21)',
+                borderRadius: '16px',
+                boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+                backdropFilter: 'blur(6.7px)',
+                WebkitBackdropFilter: 'blur(6.7px)',
+                border: '1px solid rgba(255, 255, 255, 0.4)',
+                color:'white',
+                marginTop:'5px'
+            };
         } else if (match.winner.username === currentUser) {
-            return "#ff8906"; // Match gagné par currentUser
+            return {
+                background: 'rgba(255, 137, 6, 0.3)',
+                borderRadius: '16px',
+                boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+                backdropFilter: 'blur(6.7px)',
+                WebkitBackdropFilter: 'blur(6.7px)',
+                border: '1px solid rgba(255, 137, 6, 0.4)',
+                color:'white',
+                marginTop:'5px'
+            };
         } else {
-            return "#e53170"; // Match perdu par currentUser
+            return {
+                background: 'rgba(229, 49, 112, 0.42)',
+                borderRadius: '16px',
+                boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+                backdropFilter: 'blur(6.7px)',
+                WebkitBackdropFilter: 'blur(6.7px)',
+                border: '1px solid rgba(229, 49, 112, 0.4)',
+                color:'white',
+                marginTop:'5px'
+            };
         }
     };
 
@@ -22,40 +49,39 @@ const MatchList = ({ matches, currentUser }) => {
             return "Unknown";
         }
     };
-    
 
-  return (
-    <div style={{width:"80vh"}}>
-    {matches.length > 0 ? (
-      matches.map((match) => (
-        <Accordion key={match._id} sx={{ bgcolor: getBackgroundColor(match, currentUser) }}>
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls={match._id}
-                id={match._id}
-                >
-                Adversaire : {getOpponentUsername(match, currentUser)}
-            </AccordionSummary>
-            <AccordionDetails>
-            <p>Vainqueur :{match.winner ? match.winner.username : "Match non joué"}</p>
-            <div>
-                <h3>Turns:</h3>
-                <ul>
-                {match.turns.map((turn, index) => (
-                    <li key={index}>
-                    {turn.user1} vs {turn.user2} - Winner: {turn.winner}
-                    </li>
-                ))}
-                </ul>
-            </div>
-            </AccordionDetails>
-        </Accordion>
-      ))
-    ) : (
-        <p>{matches.length === 0 ? 'Vous n\'avez jamais joué. <br/>Jouez un match' : 'Chargement des données...'}</p>
-    )}
-  </div>
-  );
+    return (
+        <div style={{ width: "80vh" }}>
+            {matches.length > 0 ? (
+                matches.map((match) => (
+                    <Accordion key={match._id} sx={getMatchStyles(match, currentUser)}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls={match._id}
+                            id={match._id}
+                        >
+                            Adversaire : {getOpponentUsername(match, currentUser)}
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <p>Vainqueur : {match.winner ? match.winner.username : "Match non joué"}</p>
+                            <div>
+                                <h3>Turns:</h3>
+                                <ul>
+                                    {match.turns.map((turn, index) => (
+                                        <li key={index}>
+                                            {turn.user1} vs {turn.user2} - Winner: {turn.winner}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </AccordionDetails>
+                    </Accordion>
+                ))
+            ) : (
+                <p>{matches.length === 0 ? 'Vous n\'avez jamais joué. <br/>Jouez un match' : 'Chargement des données...'}</p>
+            )}
+        </div>
+    );
 };
 
 export default MatchList;
