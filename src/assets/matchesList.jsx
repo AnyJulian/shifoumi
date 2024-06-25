@@ -28,7 +28,7 @@ const MatchList = ({ matches, currentUser }) => {
                 WebkitBackdropFilter: 'blur(6.7px)',
                 border: '1px solid rgba(255, 137, 6, 0.4)',
                 color:'white',
-                marginTop:'5px'
+                marginTop:'5px',
             };
         } else {
             return {

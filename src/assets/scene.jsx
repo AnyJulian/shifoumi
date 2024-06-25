@@ -15,16 +15,16 @@ const Scene = () => {
             <Canvas>
                 <Lights />
                 <WavyBackground />
-                <motion.mesh position={[-2.2, 0, 2.3]} variants={{ hover: { z: 2 } }}>
+                <motion.mesh position={[-3.0, 0.5, 2.3]} variants={{ hover: { z: 2 } }}>
                     <Sphere />
                 </motion.mesh>
-                <motion.mesh position={[-1.2, 0, 1.3]} variants={{ hover: { z: 2 } }}>
+                <motion.mesh position={[-1.8, 1.5, 1.3]} variants={{ hover: { z: 2 } }}>
                     <Cone />
                 </motion.mesh>
-                <motion.mesh position={[0.2, 0, -2.3]} variants={{ hover: { z: 2 } }}>
+                <motion.mesh position={[0.2, 3, -2.3]} variants={{ hover: { z: 2 } }}>
                     <Torus />
                 </motion.mesh>
-                <motion.mesh position={[5.1, 0, -0.3]} variants={{ hover: { z: 2 } }}>
+                <motion.mesh position={[5.1, 0.3, -0.4]} variants={{ hover: { z: 2 } }}>
                     <Icosahedron />
                 </motion.mesh>
             </Canvas>
@@ -127,7 +127,7 @@ const fragmentShader = `
         float diff = max(dot(normal, lightDir), 0.0);
         lightReflection += diff * uLightColors[i];
     }
-    color = mix(color, lightReflection, 0.1);
+    color = mix(color, lightReflection, 0.8);
     gl_FragColor = vec4(color, 1.0);
   }
 `;

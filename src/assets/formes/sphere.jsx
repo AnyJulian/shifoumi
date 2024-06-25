@@ -19,7 +19,7 @@ export function Sphere() {
   return (
     <mesh ref={ref}>
         <motion.mesh position={[0.2, 0, 0.3]} variants={{ hover: { z: 2 } }}>
-        <sphereGeometry args={[0.7]} />
+        <sphereGeometry args={[0.4]} />
         <meshPhongMaterial color="#fff" specular="#61dafb" shininess={20} />
         </motion.mesh>
     </mesh>
